@@ -1,0 +1,346 @@
+/* Сайт Екатерины Бурлак.
+   Компьютер (от 1024px): 9 экранов из макета всех страниц, вопросы и форма — HTML поверх макета.
+   Планшет и телефон: те же разделы обычной вёрсткой, бумага и рисунки из исходника. */
+
+@font-face{font-family:"Old Standard TT";font-weight:400;font-display:swap;src:url(../fonts/OldStandardTT-Regular.woff) format("woff")}
+@font-face{font-family:"Old Standard TT";font-weight:700;font-display:swap;src:url(../fonts/OldStandardTT-Bold.woff) format("woff")}
+@font-face{font-family:"Oswald";font-weight:300 400;font-display:swap;src:url(../fonts/Oswald-Light.woff) format("woff")}  /* у дизайнера в макете — Oswald Light */
+@font-face{font-family:"Roboto Condensed";font-weight:700;font-stretch:75% 100%;font-display:swap;src:url(../fonts/RobotoCondensed-Bold.woff) format("woff")}
+@font-face{font-family:"Caveat";font-weight:400;font-display:swap;src:url(../fonts/Caveat-400.woff) format("woff")}
+
+:root{
+  --cream:#f8f5ee; --ink:#131313; --black:#111310; --muted:#5b574f;
+  --red:#c56246; --blue:#aac3de; --yellow:#fccc6f;
+  --serif:"Old Standard TT",Georgia,serif; --sans:Oswald,"Arial Narrow",sans-serif; --hand:Caveat,cursive;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;overflow-x:clip;-webkit-text-size-adjust:100%;text-size-adjust:100%}   /* телефон не увеличивает текст сам: живой текст стоит по координатам макета */
+body{background:var(--cream) url(../img/paper/cream.webp) 0 0/800px;color:var(--ink);font:19px/1.55 var(--serif)}
+img{max-width:100%}
+svg[width="0"]{position:absolute;width:0;height:0;overflow:hidden}   /* скрытые библиотеки рисунков не раздвигают страницу */
+a{color:inherit;-webkit-tap-highlight-color:transparent}   /* без синей подсветки нажатия на iPhone */
+:focus-visible{outline:3px solid var(--red);outline-offset:3px}
+.visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* ===== экраны ===== */
+.screen{position:relative;container-type:inline-size;--u:calc(100cqw / 1440)}
+.art{display:block;width:100%;height:auto}
+.art .hit{fill:transparent}
+/* пункты меню на каждом экране: кремовая обводка под буквами — читаются и на фото, на креме её не видно */
+#design .st9{paint-order:stroke fill;stroke:#f6f2ea;stroke-width:5px;stroke-linejoin:round}
+/* чёрная плашка с темами внизу каждого экрана: рваным краем заходит на низ экрана */
+.divider{display:block;position:relative;z-index:3;width:100%;height:auto;margin-top:calc(var(--u) * -45)}
+.divider a:hover text{fill:#f2c14e}
+.art .about-fix{font:400 25.5px var(--serif);letter-spacing:1.17px;fill:#111310}
+.art .hit{transition:fill .25s ease}
+/* подсветка одинаковая на любом фоне — бумаге, фото, голубом: тёмная полупрозрачная плашка */
+.art a:hover .hit{fill:rgba(25,20,21,.13)}
+.art a:focus-visible .hit{fill:rgba(25,20,21,.18)}
+.m-only{display:none}
+
+/* живой текст поверх экранов 2–9 (из картинки он убран, см. strip_print_text в build_design.py).
+   Координаты — точки макета 1440×900 (--x, --y, --w), размеры — шкала третьей версии в тех же единицах. */
+.ov{position:absolute;inset:0;pointer-events:none;color:#111}
+.ov>*{position:absolute;left:calc(var(--u) * var(--x));top:calc(var(--u) * var(--y));pointer-events:auto}
+.ov>[style*="--w"]{width:calc(var(--u) * var(--w))}
+.ov .t{font:700 calc(var(--u) * 88)/1.02 var(--serif);text-transform:uppercase;letter-spacing:-.01em;white-space:nowrap}
+.ov .t span{display:block;transform:scaleX(.72);transform-origin:left}
+.ov .t-faq{font-size:calc(var(--u) * 104)}
+.ov .lead{font-size:calc(var(--u) * 24);line-height:1.4}
+.ov .body{font-size:calc(var(--u) * 19);line-height:1.5}
+.ov .body p+p{margin-top:calc(var(--u) * 12)}
+.ov .strong{font-weight:700}
+.ov .it h3{font:400 calc(var(--u) * 22)/1.2 var(--sans);margin-bottom:calc(var(--u) * 6)}
+.ov .it p{font-size:calc(var(--u) * 19);line-height:1.5}
+.ov .edu h3{font-size:calc(var(--u) * 19)}
+.ov .edu p{font-size:calc(var(--u) * 16);line-height:1.45}
+.ov .year{display:block;font:400 calc(var(--u) * 20)/1.2 var(--sans);margin-bottom:calc(var(--u) * 4)}
+.ov .mail a{text-decoration:none}
+.ov .mail a:hover{text-decoration:underline}
+
+/* вопросы поверх экрана 8 */
+.faq-ui{position:absolute;left:calc(var(--u) * 662);top:calc(var(--u) * 412);width:calc(var(--u) * 732);height:calc(var(--u) * 420);overflow:auto;font-size:calc(var(--u) * 19);line-height:1.5;scrollbar-width:thin}
+.faq-ui details{border-top:calc(var(--u) * 2) solid var(--ink);padding:calc(var(--u) * 22) 0}
+.faq-ui details:last-child{border-bottom:calc(var(--u) * 2) solid var(--ink)}
+.faq-ui summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:1em;font:700 calc(var(--u) * 28)/1.2 var(--serif)}
+.faq-ui summary::-webkit-details-marker{display:none}
+.faq-ui summary::after{content:"+";font:400 calc(var(--u) * 44)/1 var(--serif)}
+.faq-ui details[open] summary::after{content:"–"}
+.faq-ui p{margin-top:calc(var(--u) * 18);line-height:1.45}
+.faq-ui details>:last-child{margin-bottom:calc(var(--u) * 22)}   /* воздух после ответа перед следующим вопросом */
+
+/* форма поверх экрана 9: поля по рамкам из макета */
+.form-ui{position:absolute;inset:0;pointer-events:none}
+.form-ui input,.form-ui textarea,.form-ui button{position:absolute;pointer-events:auto;font:400 calc(var(--u) * 24) var(--serif);color:var(--ink);background:transparent;border:0;outline-offset:0}
+.form-ui input,.form-ui textarea{padding:0 calc(var(--u) * 24)}
+.form-ui ::placeholder{color:var(--ink);opacity:1}
+.form-ui :focus::placeholder{opacity:.4}
+.f-email{left:calc(var(--u) * 777);top:calc(var(--u) * 389);width:calc(var(--u) * 552);height:calc(var(--u) * 56)}
+.f-name{left:calc(var(--u) * 777);top:calc(var(--u) * 466);width:calc(var(--u) * 552);height:calc(var(--u) * 54)}
+.f-comment{left:calc(var(--u) * 777);top:calc(var(--u) * 541);width:calc(var(--u) * 552);height:calc(var(--u) * 134);resize:none;line-height:1.5}
+.form-ui .f-comment{padding-top:calc(var(--u) * 10);line-height:calc(var(--u) * 36)}   /* первая строка — на той же высоте, что текст в полях выше */   /* сильнее общего .form-ui textarea{padding:0 …} */
+.f-send{left:calc(var(--u) * 778);top:calc(var(--u) * 699);width:calc(var(--u) * 550);height:calc(var(--u) * 70);border-radius:calc(var(--u) * 40);cursor:pointer;color:transparent!important}
+.f-send:hover{background:rgba(255,255,255,.08)}
+.f-status{position:absolute;left:calc(var(--u) * 778);top:calc(var(--u) * 776);width:calc(var(--u) * 550);font:400 calc(var(--u) * 17)/1.3 var(--serif);color:var(--red)}
+.form-ui [aria-invalid="true"]{box-shadow:inset 0 0 0 2px var(--red);border-radius:4px}
+
+/* ===== меню ===== */
+.menu-toggle{position:fixed;z-index:50;top:20px;right:20px;width:52px;height:52px;border-radius:50%;border:0;background:var(--black);cursor:pointer;display:grid;place-content:center;gap:5px;opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s}
+.menu-toggle i{display:block;width:20px;height:2px;background:#fff;transition:transform .25s,opacity .25s}
+.menu-open .menu-toggle{opacity:1;visibility:visible}
+/* на компьютере меню — строка в каждом экране (как в макете), круглая кнопка только на телефоне */
+@media (min-width:1024px){.menu-toggle{display:none}}
+.menu-open .menu-toggle i:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.menu-open .menu-toggle i:nth-child(2){opacity:0}
+.menu-open .menu-toggle i:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.menu{position:fixed;inset:0;z-index:40;background:var(--cream) url(../img/paper/cream.webp) 0 0/800px;display:flex;flex-direction:column;justify-content:center;padding:40px 32px;gap:4px;opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s}
+.menu{overflow:hidden}   /* длинные пункты (до сжатия по ширине) иначе раздвигают страницу на телефоне */
+.menu-open .menu{opacity:1;visibility:visible}
+.menu a{font:700 clamp(32px,9vw,68px)/1.15 var(--serif);text-transform:uppercase;text-decoration:none;transform:scaleX(.75);transform-origin:left;white-space:nowrap}
+.menu a:hover{color:var(--red)}
+.menu .menu-note{font:400 30px var(--hand);margin-top:24px;color:var(--muted)}
+.menu-open{overflow:hidden}
+
+/* ===== общие элементы телефонной вёрстки ===== */
+.title{font:700 clamp(44px,12.4vw,100px)/1.02 var(--serif);text-transform:uppercase;letter-spacing:-.01em;margin-bottom:24px}
+.title span{display:block;white-space:nowrap;transform:scaleX(.72);transform-origin:left}
+.lead{font-size:21px;line-height:1.4}
+.bold{font-weight:700}
+.btn{display:inline-flex;align-items:center;gap:26px;background:var(--black);color:#fff;text-decoration:none;padding:15px 34px;border-radius:40px;font:400 20px var(--sans);text-transform:uppercase;letter-spacing:.03em;transition:background .2s}
+.btn:hover{background:var(--red)}
+.btn-note{margin-top:12px;font-size:18px}
+.pic{position:relative;margin:34px 0 10px}
+.photo{display:block;width:100%;height:auto;clip-path:polygon(2% 1%,35% 0,68% 2%,100% 0,98% 48%,100% 99%,62% 100%,30% 98%,0 100%,1% 52%)}
+.on-paper{background:#fffdf8;clip-path:polygon(0 3%,5% 0,12% 2%,21% 0,32% 3%,44% 1%,55% 3%,67% 0,78% 2%,89% 0,100% 2%,99% 30%,100% 55%,99% 80%,100% 97%,90% 100%,79% 97%,66% 100%,54% 97%,42% 100%,30% 97%,18% 100%,8% 97%,0 99%,1% 70%,0 45%,1% 20%)}
+.on-paper.blue{background:var(--blue) url(../img/paper/blue.webp) center/cover}
+.on-paper.yellow{background:var(--yellow) url(../img/paper/yellow.webp) center/cover}
+.on-paper.red{background:var(--red) url(../img/paper/red.webp) center/cover;color:#fff}
+.note{position:absolute;right:-6px;bottom:-26px;z-index:3;padding:22px 26px 18px;font:400 clamp(26px,7vw,40px)/1.05 var(--serif);transform:rotate(-6deg)}
+.note-inline{padding:22px 24px;margin:6px 0 22px;font-size:22px;line-height:1.3}
+.hand-note{font:400 24px/1.25 var(--serif);transform:rotate(-2deg)}
+.icon{flex:none;width:76px;height:auto}
+.topics,.methods,.timeline{list-style:none}
+.topics li{display:flex;gap:18px;align-items:flex-start;margin:26px 0}
+.topics h3{font:700 21px/1.2 var(--sans);margin-bottom:6px}
+.topics p{font-size:17px;line-height:1.45}
+.methods{display:grid;grid-template-columns:1fr 1fr;gap:20px 16px;margin:22px 0}
+.methods li{display:flex;flex-direction:column;gap:8px}
+.methods .icon{width:84px}
+.methods p{font-size:17px;line-height:1.35}
+.timeline li{border-left:3px solid var(--yellow);padding-left:14px;margin:20px 0}
+.timeline .y{font:700 18px var(--sans)}
+.timeline h3{font:700 18px/1.25 var(--sans);margin:2px 0 4px}
+.timeline p{font-size:16px;line-height:1.4}
+.m-mail{margin-top:14px;font-size:21px}
+
+/* первый экран на телефоне */
+.logo{font:700 22px/1.05 var(--serif);letter-spacing:.06em;text-transform:uppercase;text-decoration:none}
+.logo small{display:block;font-weight:400;font-size:14px;letter-spacing:.1em;margin-top:12px;color:var(--muted)}
+.h-ink{fill:#0d0d0d;fill-rule:evenodd}
+.h-title{font:700 106px var(--serif);fill:#131313}
+.h-btn{font:400 23px var(--sans);fill:#fff}
+.h-note{font:400 45.83px var(--hand);fill:#131313}
+.h-topic{font:400 20px var(--sans);fill:#fff}
+.h-logo{font:700 22px var(--serif);fill:#131313}
+.h-sub{font:400 14px var(--serif);fill:#131313}
+.h-nav{font:400 16px var(--sans);fill:#131313}
+.m-head{padding:28px 20px 0}
+.m-title{padding:44px 20px 0;font:700 clamp(64px,19vw,128px)/.9 var(--serif);text-transform:uppercase}
+.m-title span{display:block;white-space:nowrap;transform:scaleX(.7);transform-origin:left}
+.m-underline{display:block;width:62%;max-width:300px;height:auto;margin:18px 0 26px 20px}
+.hero-mobile .btn{margin-left:20px}
+.m-photo{display:block;width:100%;height:auto;margin-top:28px}
+.m-topics{display:grid;grid-template-columns:repeat(3,auto);justify-content:space-between;gap:12px 18px;background:#0d0d0d;color:#fff;margin-top:-2px;padding:6px 20px 30px;font:400 17px var(--sans);text-transform:uppercase}
+.m-topics a{text-decoration:none}
+
+/* ===== планшет и телефон ===== */
+@media (max-width:1023px){
+  .art,.ov,.divider{display:none}
+  .m-only{display:block}
+  .menu-toggle{opacity:1;visibility:visible;top:26px;right:16px}
+  .m-block{max-width:680px;margin:0 auto;padding:0 20px}
+  .screen:not(#top){padding:56px 0 24px}
+  #requests-2{padding-top:0}
+  .faq-ui,.form-ui{position:static;width:auto;height:auto;overflow:visible;max-width:680px;margin:0 auto;padding:0 20px;font-size:17px;pointer-events:auto}
+  .faq-ui details{border-top:2px solid var(--ink);padding:18px 0}
+  .faq-ui details:last-child{border-bottom:2px solid var(--ink)}
+  .faq-ui summary{font-size:23px}
+  .faq-ui summary::after{font-size:32px}
+  .faq-ui p{margin-top:12px}
+  .faq-ui details>:last-child{margin-bottom:16px}
+  #faq .m-block:last-child{margin-top:30px}
+  .form-ui{display:flex;flex-direction:column;gap:14px}
+  .form-ui input,.form-ui textarea,.form-ui button{position:static;width:100%;height:auto;font-size:18px}
+  .form-ui input,.form-ui textarea{border:2px solid var(--ink);border-radius:6px;padding:14px 18px;background:rgba(255,255,255,.35)}
+  .form-ui textarea{min-height:130px;resize:vertical}
+  .f-send{color:#fff!important;background:var(--black)!important;border-radius:40px;padding:17px 20px;font:400 18px var(--sans)!important;text-transform:uppercase}
+  .f-status{position:static;width:auto;font-size:16px}
+}
+
+
+/* нумерованный список в ответах */
+.faq-ui .faq-list{margin:calc(var(--u) * 14) 0 0;padding-left:1.4em}
+.faq-ui .faq-list li{padding-left:.3em;line-height:1.5}
+.faq-ui .faq-list li+li{margin-top:.6em}
+.faq-ui .faq-list li::marker{font-weight:700}
+@media (max-width:1023px){.faq-ui .faq-list{margin-top:12px}}
+
+/* ===== подвал: чёрная полоса под последней плашкой, тот же шрифт, что у тем ===== */
+.site-foot{background:#161716;color:#a9a497;display:flex;justify-content:space-between;align-items:center;gap:16px 40px;flex-wrap:wrap;
+  position:relative;z-index:4;margin-top:-6px;padding:18px max(44px,calc(var(--u, 1px) * 95)) 26px;border-top:1px solid #2a2a27;
+  font:400 14px/1.4 Oswald,"Arial Narrow",sans-serif;text-transform:uppercase;letter-spacing:.06em}
+.site-foot p{margin:0}
+.site-foot .sf-own{font-size:.82em;color:#7f7a71}   /* копирайт мельче и светлее авторов */
+.site-foot a{color:#fff;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.35)}
+.site-foot a:hover{color:#f2c14e;border-color:#f2c14e}
+@media (max-width:1023px){.site-foot{flex-direction:column;align-items:flex-start;padding:22px 20px 28px;font-size:13px}}
+
+/* экраны 1–8 из файла дизайнера: живой текст поверх картинки (build_ai.py) */
+.art .live text{font-kerning:none}   /* ширина строк считается без кернинга (build_ai.natural_width) */
+.art .live tspan[font-family*="Roboto"]{font-stretch:75%}
+
+/* экраны встык: картинки с дробной высотой иначе дают щель в долю пикселя между экранами */
+@media (min-width:1024px){
+  .screen+.screen{margin-top:-2px}
+}
+
+/* ответы в «Частых вопросах»: подзаголовки и список методов */
+.faq-ui .faq-sub{font-weight:700;margin-top:1.1em}
+.faq-ui .faq-sub+p{margin-top:.35em}
+.faq-ui .faq-methods{list-style:none;margin:.4em 0 0;padding:0}
+.faq-ui .faq-methods li{position:relative;padding-left:1.1em;margin-top:.2em}
+.faq-ui .faq-methods li::before{content:"—";position:absolute;left:0;color:var(--red)}
+/* компьютер: открытый ответ показывается целиком, экран удлиняется вниз (site.js) */
+@media (min-width:1024px){
+  .faq-ui{height:auto!important;overflow:visible!important}
+  #faq{transition:padding-bottom .25s ease}
+}
+
+/* меню поверх тёмного фото (экран «Обо мне») — светлая обводка букв */
+.art .head-halo text{stroke:#f8f5ee;stroke-width:3.5px;stroke-linejoin:round;paint-order:stroke}
+
+/* ===== телефон: экраны из мобильного макета дизайнера (build_mobile.py) =====
+   Картинка экрана + живой текст поверх (как на компьютере). --mm — одна точка макета шириной 699. */
+@media (max-width:1023px){
+  .screen{overflow-x:clip}
+  .screen:not(#top){padding:0}
+  .m-block,.site-foot{display:none}
+  .m-art-wrap{max-width:520px;margin:0 auto}
+  .m-art{display:block;width:100%;height:auto}
+  .m-art .live text{font-kerning:none}
+  .m-art .live tspan[font-family*="Roboto"]{font-stretch:75%}
+  .m-art .hit{fill:transparent;transition:fill .25s}
+  .m-art a:active .hit,.m-art a:hover .hit{fill:rgba(25,20,21,.13)}
+  .menu-toggle{opacity:0;visibility:hidden}
+  .menu-open .menu-toggle{opacity:1;visibility:visible}
+  #faq,#contact{--mm:calc(min(100cqw,520px) / 699)}
+
+  /* «Частые вопросы»: между двумя частями картинки, линии и шрифты как в макете */
+  #faq .faq-ui{position:static;width:min(100cqw,520px);height:auto;max-width:none;margin:0 auto;overflow:visible;
+    padding:0 calc(var(--mm)*31) 0 calc(var(--mm)*41);background:#f5f5eb;font-size:calc(var(--mm)*28);line-height:1.4}
+  /* линии и плюсы — рисованные штрихи дизайнера (build_mobile.faq_drawings) */
+  #faq .faq-ui details{border:0;border-radius:0;margin:0;padding:calc(var(--mm)*22) 0 calc(var(--mm)*22);
+    background:url(../img/draw/faq-line.png) 0 0/100% calc(var(--mm)*6) no-repeat}
+  #faq .faq-ui details:last-child{border:0;background:url(../img/draw/faq-line.png) 0 0/100% calc(var(--mm)*6) no-repeat,
+    url(../img/draw/faq-line.png) 0 100%/100% calc(var(--mm)*6) no-repeat}
+  #faq .faq-ui summary{font:700 calc(var(--mm)*38)/1.15 var(--serif)}
+  #faq .faq-ui summary::after{content:"";flex:none;width:calc(var(--mm)*39);height:calc(var(--mm)*31);background:url(../img/draw/faq-plus.png) center/contain no-repeat}
+  #faq .faq-ui details[open] summary::after{content:"";height:calc(var(--mm)*31);background:url(../img/draw/faq-minus.png) center/100% calc(var(--mm)*5) no-repeat}
+  #faq .faq-ui p{margin-top:calc(var(--mm)*10)}
+  #faq .faq-ui details>:last-child{margin-bottom:calc(var(--mm)*6)}
+  #faq .faq-ui .faq-list{margin-top:calc(var(--mm)*10)}
+
+  /* «Запись»: поля поверх рамок, нарисованных в картинке */
+  /* слой формы — только под полями: иначе он закрывает меню и ссылки подвала на экране «Запись» */
+  #contact .form-ui{position:absolute;left:50%;top:0;bottom:auto;width:min(100cqw,520px);height:0;margin:0;padding:0;transform:translateX(-50%);display:block;max-width:none;pointer-events:none}
+  #contact .form-ui>*{pointer-events:auto}
+  #contact .form-ui input,#contact .form-ui textarea,#contact .form-ui button{position:absolute;border:0;border-radius:0;background:transparent;box-shadow:none;max-width:none;
+    font:400 calc(var(--mm)*27) var(--serif);color:var(--ink);padding:0 calc(var(--mm)*24)}
+  /* координаты полей пишет build_mobile.py (по рамкам макета); текст во всех полях — на одной высоте от верха рамки */
+  #contact .form-ui input{line-height:calc(var(--mm)*36);padding-top:0;padding-bottom:0}
+  #contact .form-ui .f-comment{min-height:0;line-height:calc(var(--mm)*36);padding-top:calc(var(--mm)*10.5);resize:none}
+  #contact .f-send{left:calc(var(--mm)*60);top:calc(var(--mm)*796);width:calc(var(--mm)*551);height:calc(var(--mm)*71);border-radius:calc(var(--mm)*36)!important;color:transparent!important;background:transparent!important;padding:0}
+  #contact .f-status{position:absolute;left:calc(var(--mm)*60);top:calc(var(--mm)*872);width:calc(var(--mm)*551);font-size:calc(var(--mm)*20)}
+  #contact .form-ui [aria-invalid="true"]{box-shadow:inset 0 0 0 2px var(--red)}
+}
+
+/* меню на телефоне — карточка из макета дизайнера (дизайн/меню/menu.svg), всплывает поверх страницы */
+@media (max-width:1023px){
+  .menu{inset:10px 8px auto auto;width:min(330px,calc(100vw - 16px));height:auto;padding:0;background:none;display:block;
+    transform:translateY(-8px) scale(.97);transform-origin:top right;transition:opacity .2s,visibility .2s,transform .2s;overflow:visible}
+  .menu-open .menu{transform:none}
+  .menu-card{display:block;width:100%;height:auto;filter:drop-shadow(0 14px 30px rgba(0,0,0,.25))}
+  .menu .menu-card a{transform:none;font:inherit;white-space:normal}
+  .menu-card .card{fill:#f6f4eb}
+  /* пункт без обводки; при наведении (на телефоне — при нажатии) появляется рисованная обводка — так задумала дизайнер */
+  .menu-card .pill{fill:transparent;stroke:#000;stroke-width:2px;stroke-miterlimit:10;opacity:0;transition:opacity .15s}
+  .menu-card text{font:400 29.6px Oswald,"Arial Narrow",sans-serif;fill:#231f20}
+  .menu-card .mi:hover .pill,.menu-card .mi:active .pill,.menu-card .mi:focus-visible .pill{opacity:1}
+  .menu-card a{-webkit-tap-highlight-color:transparent;outline:none}
+  .menu-card .ring{fill:none;stroke:#000;stroke-width:2px}
+  .menu-card .cross{fill-rule:evenodd;stroke:#000;stroke-width:2px}
+  .menu-open{overflow:visible}
+  .menu-open .menu-toggle{opacity:0;visibility:hidden}
+  .menu-open::after{content:"";position:fixed;inset:0;z-index:39;background:rgba(17,19,16,.35)}
+}
+@media (max-width:1023px){
+  /* подчёркнутые имена в подвале — видно, что это ссылки */
+  .m-art .foot-u{stroke:#fff;stroke-width:2.5;opacity:.75}
+  /* подвал как на компьютере: копирайт и подписи светлые, имена белые */
+  .m-art .m-copy,.m-art .m-foot-l,.m-art .m-foot-n{font-family:Oswald,"Arial Narrow",sans-serif;font-weight:400}
+  .m-art .m-copy{letter-spacing:.04em}
+  .m-art .m-copy,.m-art .m-foot-l{fill:#a9a497}
+  .m-art .m-foot-n{fill:#fff}
+  .m-art a:hover~.foot-u{opacity:1}
+}
+
+/* ===== новые экраны компьютера (29.10): «Стоимость и супервизия», «Дипломы и сертификаты» ===== */
+.screen-new{background:var(--cream) url(../img/paper/cream.webp) 0 0/800px}
+@media (max-width:1023px){.screen-new{display:none}}   /* пока только компьютерная версия */
+.prices .kicker{display:block;font:300 calc(var(--u) * 18)/1.2 var(--sans);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:calc(var(--u) * 10)}
+.prices h3{font:700 calc(var(--u) * 38)/1.1 var(--serif)}
+.prices .price{font:700 calc(var(--u) * 64)/1.1 var(--serif);margin-top:calc(var(--u) * 18)}
+.prices .price-flex{font-size:calc(var(--u) * 46);line-height:1.35}
+.prices .dur{font:300 calc(var(--u) * 22)/1.3 var(--sans);text-transform:uppercase;letter-spacing:.04em;margin-top:calc(var(--u) * 4)}
+.prices .txt{font-size:calc(var(--u) * 19);line-height:1.5;margin-top:calc(var(--u) * 20);max-width:calc(var(--u) * 520)}
+.pill{display:inline-flex;align-items:center;gap:calc(var(--u) * 22);margin-top:calc(var(--u) * 28);padding:calc(var(--u) * 15) calc(var(--u) * 38);border-radius:calc(var(--u) * 40);background:var(--black);color:#f4f1ea;font:300 calc(var(--u) * 22)/1 var(--sans);text-transform:uppercase;text-decoration:none;transition:background .25s}
+.pill:hover{background:#2c2f2a}
+.dips .dip{transform:rotate(var(--r))}
+.dip-frame{position:relative;height:calc(var(--u) * 140);background:#fffdf8;border:calc(var(--u) * 2) dashed #b9b2a3;display:grid;place-items:center;overflow:hidden;box-shadow:0 calc(var(--u) * 6) calc(var(--u) * 14) rgba(40,30,20,.08)}
+.dip-frame::before{content:"";position:absolute;top:calc(var(--u) * -6);left:50%;width:calc(var(--u) * 96);height:calc(var(--u) * 30);transform:translateX(-50%) rotate(-3deg);background:url(../img/paper/yellow.webp) center/100% 100%;opacity:.9}
+.dip-frame img{width:100%;height:100%;object-fit:cover;display:block}
+.dip-frame:has(img){border-style:solid;border-color:#e3ddd0}
+.dip-empty{font:400 calc(var(--u) * 28)/1 var(--hand);color:#9a927f}
+.dips figcaption{margin-top:calc(var(--u) * 14);font-size:calc(var(--u) * 17);line-height:1.35}
+.dips .year{font-size:calc(var(--u) * 18)}
+#contact .head-halo text{stroke-width:6px}   /* имя на ч/б фото «Записи» (29.10) */
+/* раздел «Тексты» (29.10): карточки статей; пока пустые */
+.texts .lead{font-size:calc(var(--u) * 24);line-height:1.4}
+.post{transform:rotate(var(--r));display:flex;flex-direction:column;height:calc(var(--u) * 380);padding:calc(var(--u) * 28) calc(var(--u) * 30);background:#fffdf8;box-shadow:0 calc(var(--u) * 6) calc(var(--u) * 16) rgba(40,30,20,.1);text-decoration:none;color:inherit}
+.post::before{content:"";position:absolute;top:calc(var(--u) * -10);left:50%;width:calc(var(--u) * 96);height:calc(var(--u) * 30);transform:translateX(-50%) rotate(-3deg);background:url(../img/paper/yellow.webp) center/100% 100%;opacity:.9}
+.post .kicker{font:300 calc(var(--u) * 18)/1.2 var(--sans);text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.post h3{font:700 calc(var(--u) * 30)/1.15 var(--serif);margin-top:calc(var(--u) * 14)}
+.post p{font-size:calc(var(--u) * 18);line-height:1.5;margin-top:calc(var(--u) * 14)}
+.post-body{flex:1;display:grid;place-items:center;border:calc(var(--u) * 2) dashed #cfc8b8;margin-top:calc(var(--u) * 16)}
+.post-more{font:300 calc(var(--u) * 20)/1 var(--sans);text-transform:uppercase;margin-top:calc(var(--u) * 18)}
+a.post:hover .post-more{text-decoration:underline}
+.prices #supervision .dur{margin-top:calc(var(--u) * 14)}
+.sv-list{list-style:none;margin-top:calc(var(--u) * 18);font-size:calc(var(--u) * 19);line-height:1.45}
+.sv-list li{position:relative;padding-left:calc(var(--u) * 26)}
+.sv-list li+li{margin-top:calc(var(--u) * 12)}
+.sv-list li::before{content:"";position:absolute;left:0;top:calc(var(--u) * 11);width:calc(var(--u) * 12);height:calc(var(--u) * 12);border-radius:50%;background:var(--yellow)}
+.sv-list b{font-weight:700}
+/* дипломы — карусель (29.10) */
+.dip-carousel{height:calc(var(--u) * 480)}
+.dip-track{position:absolute;left:calc(var(--u) * 100);right:calc(var(--u) * 100);top:0;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;outline:none}
+.dip-track::-webkit-scrollbar{display:none}
+.dip-slide{flex:0 0 100%;scroll-snap-align:center;padding:calc(var(--u) * 16) calc(var(--u) * 10) 0}
+.dip-slide .dip-frame{height:calc(var(--u) * 360)}
+.dip-slide figcaption{margin-top:calc(var(--u) * 16);font-size:calc(var(--u) * 20);line-height:1.35;text-align:center}
+.dip-slide .year{display:block;font:400 calc(var(--u) * 20)/1.2 var(--sans);margin-bottom:calc(var(--u) * 4)}
+.dip-nav{position:absolute;top:calc(var(--u) * 170);width:calc(var(--u) * 64);height:calc(var(--u) * 64);border-radius:50%;border:0;background:var(--black);color:#f4f1ea;font:300 calc(var(--u) * 26)/1 var(--sans);cursor:pointer;transition:background .25s}
+.dip-nav:hover{background:#2c2f2a}
+.dip-prev{left:0}.dip-next{right:0}
+.dip-count{position:absolute;right:0;bottom:0;font:300 calc(var(--u) * 22)/1 var(--sans);letter-spacing:.06em}
+#about .art text[font-family="Oswald"]{stroke:#f8f5ee;stroke-width:4.5px;stroke-linejoin:round;paint-order:stroke}   /* меню на фото «Обо мне» (29.10) */
